@@ -13,6 +13,9 @@ jobs:
     resource_class: small
     steps:
       - checkout
+      - node/install:
+          install-yarn: true
+          node-version: '13.14'
       - node/install-packages
   test:
     executor:
@@ -21,13 +24,20 @@ jobs:
     resource_class: large
     steps:
       - checkout
+      - node/install:
+          install-yarn: true
+          node-version: '13.14'
       - node/install-packages
-      - run: npm run test
-      - run: mkdir -p test-results
+      - run:
+          name: Install JUnit coverage reporter
+          command: yarn add --dev jest-junit
+      - run:
+          name: Run tests with JUnit as reporter
+          command: jest --ci --runInBand --reporters=default --reporters=jest-junit
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
       - store_test_results:
-          path: test-results
-      - store_artifacts:
-          path: test-results
+          path: ./reports/junit/
   deploy:
     circleci_ip_ranges: true # opts the job into the IP ranges feature
     docker:
@@ -41,11 +51,11 @@ jobs:
       - aws-s3/sync:
           arguments: |
             --cache-control "max-age=86400"
-          from: ./machine_ip.txt
+          from: machine_ip.txt
           to: 's3://jasur-circleci-test/'
       - aws-s3/copy:
           arguments: '--dryrun'
-          from: ./machine_ip.txt
+          from: machine_ip.txt
           to: 's3://jasur-circleci-test/'
   notify:
     docker:
