@@ -3,41 +3,25 @@ version: 2.1
 orbs:
   slack: circleci/slack@4.1
   aws-s3: circleci/aws-s3@3.0
-  node: circleci/node@4.7.0
+  node: circleci/node@5.0.0
 
 jobs:
   build:
-    executor:
-      name: node/default
-      tag: '13.14'
+    docker:
+      - image: cimg/node:17.6.0
     resource_class: small
     steps:
       - checkout
-      - node/install:
-          install-yarn: true
-          node-version: '13.14'
-      - node/install-packages
+      - node/run:
+          npm-run: build
   test:
-    executor:
-      name: node/default
-      tag: '13.14'
+    docker:
+      - image: cimg/node:17.6.0
     resource_class: large
     steps:
       - checkout
-      - node/install:
-          install-yarn: true
-          node-version: '13.14'
-      - node/install-packages
-      - run:
-          name: Install JUnit coverage reporter
-          command: yarn add --dev jest-junit
-      - run:
-          name: Run tests with JUnit as reporter
-          command: jest --ci --runInBand --reporters=default --reporters=jest-junit
-          environment:
-            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
-      - store_test_results:
-          path: ./reports/junit/
+      - node/test:
+          test-results-for: jest
   deploy:
     circleci_ip_ranges: true # opts the job into the IP ranges feature
     docker:
