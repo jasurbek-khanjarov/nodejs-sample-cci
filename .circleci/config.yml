@@ -37,15 +37,15 @@ jobs:
       - checkout
       - run:
           name: "Get Machine IP & write to the file"
-          command: curl ifconfig.co > machine_ip.txt && cat machine_ip.txt
+          command: mkdir bucket && curl ifconfig.co > bucket/machine_ip.txt && cat machine_ip.txt
       - aws-s3/sync:
           arguments: |
             --cache-control "max-age=86400"
-          from: machine_ip.txt
+          from: bucket
           to: 's3://jasur-circleci-test/'
       - aws-s3/copy:
           arguments: '--dryrun'
-          from: machine_ip.txt
+          from: bucket/machine_ip.txt
           to: 's3://jasur-circleci-test/'
   notify:
     docker:
