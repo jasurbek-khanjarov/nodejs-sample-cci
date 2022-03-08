@@ -41,11 +41,11 @@ jobs:
       - aws-s3/sync:
           arguments: |
             --cache-control "max-age=86400"
-          from: ./
+          from: ./machine_ip.txt
           to: 's3://jasur-circleci-test/'
       - aws-s3/copy:
           arguments: '--dryrun'
-          from: machine_ip.txt
+          from: ./machine_ip.txt
           to: 's3://jasur-circleci-test/'
   notify:
     docker:
@@ -83,7 +83,7 @@ workflows:
         context: jasur-aws-s3
         requires:
           - test
-    # - notify:
-    #     context: slack_secrets
-    #     requires:
-    #       - deploy
+    - notify:
+        context: slack_secrets
+        requires:
+          - deploy
