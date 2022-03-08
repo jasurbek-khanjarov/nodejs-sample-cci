@@ -59,9 +59,9 @@ jobs:
                   "type": "section",
                   "fields": [
                     {
-                      "channel": ${SLACK_CHANNEL_ID},
+                      "channel": $SLACK_CHANNEL_ID,
                       "type": "plain_text",
-                      "text": "*This is a text notification*",
+                      "text": $CIRCLE_BUILD_URL,
                       "emoji": true
                     }
                   ]
