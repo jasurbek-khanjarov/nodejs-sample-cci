@@ -3,25 +3,31 @@ version: 2.1
 orbs:
   slack: circleci/slack@4.1
   aws-s3: circleci/aws-s3@3.0
-  node: circleci/node@5.0.0
+  node: circleci/node@4.7.0
 
 jobs:
   build:
-    docker:
-      - image: cimg/node:17.6.0
+    executor:
+      name: node/default
+      tag: '13.14'
     resource_class: small
     steps:
       - checkout
-      - node/run:
-          npm-run: build
+      - node/install-packages
   test:
-    docker:
-      - image: cimg/node:17.6.0
+    executor:
+      name: node/default
+      tag: '13.14'
     resource_class: large
     steps:
       - checkout
-      - node/test:
-          test-results-for: jest
+      - node/install-packages
+      - run: npm run test
+      - run: mkdir -p test-results
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-results
   deploy:
     circleci_ip_ranges: true # opts the job into the IP ranges feature
     docker:
