@@ -61,7 +61,7 @@ jobs:
                     {
                       "channel": "C02JEP6Q3B2",
                       "type": "plain_text",
-                      "text": "*This is a text notification*",
+                      "text": "*This is a text notification test*",
                       "emoji": true
                     }
                   ]
