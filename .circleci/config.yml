@@ -80,7 +80,7 @@ workflows:
           branches:
             ignore: /dependabot\/.*/
     - deploy:
-        context: jasur-aws-s3
+        context: jasur-aws-s3-no
         requires:
           - test
     - notify:
