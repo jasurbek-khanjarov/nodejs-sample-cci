@@ -9,7 +9,7 @@
     "cover": "nyc --reporter=lcov --reporter=text npm run test"
   },
   "dependencies": {
-    "express": "4.13.3",
+    "express": "4.18.0",
     "jest": "27.5.1",
     "nyc": "15.1.0"
   },
