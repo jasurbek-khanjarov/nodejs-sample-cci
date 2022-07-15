@@ -60,7 +60,7 @@ jobs:
                   "fields": [
                     {
                       "type": "plain_text",
-                      "text": "*This is a text notification test*",
+                      "text": "*This is a text notification test for demo*",
                       "emoji": true
                     }
                   ]
