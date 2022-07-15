@@ -80,6 +80,7 @@ workflows:
             ignore: /dependabot\/.*/
     - deploy:
         context: jasur-aws-s3
+        type: approval
         requires:
           - test
     - notify:
