@@ -42,11 +42,11 @@ jobs:
           arguments: |
             --cache-control "max-age=86400"
           from: bucket
-          to: ${S3_BUCKET_ENDPOINT}
+          to: test-jasur
       - aws-s3/copy:
           arguments: '--dryrun'
           from: bucket/machine_ip.txt
-          to: ${S3_BUCKET_ENDPOINT}
+          to: test-jasur
   notify:
     docker:
       - image: 'cimg/base:stable'
